@@ -1,15 +1,19 @@
 import pandas as pd
 
-#Função para simular o comportamento da LFT com base na Selic Over diária
-#csv_path: caminho do arquivo CSV com a série histórica da Selic Over
-#A série deve conter colunas "Date" e "Value" (taxa diára em %)
-def simulate_lft(csv_path='data/selic_over.csv'):
-    #Importa os dados
-    selic = pd.read_csv(csv_path, parse_dates=['Date'], index_col='Date')
-    selic.rename(columns={'Value': 'Selic'}, inplace=True)
+"""
+    Simula o comportamento da LFT com base na Selic Over diária.
+    
+    Parâmetros:
+    - selic_df: DataFrame com índice de datas e coluna 'Selic' em percentual anual
+    
+    Retorna:
+    - DataFrame com coluna 'LFT' representando a curva acumulada normalizada
+    """
+def simulate_lft(selic_df):
+    selic = selic_df.copy()
 
     #Calcula o retorno diário da LFT com base na Selic
-    selic['Daily_Return'] = selic['Selic'] / 100 / 252
+    selic['Daily_Return'] = selic['SELIC'] / 100 / 252
 
     #Simula o valor acumulado da LFT ao longo do tempo
     selic['LFT'] = (1 + selic['Daily_Return']).cumprod()
