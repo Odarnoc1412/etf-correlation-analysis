@@ -1,8 +1,10 @@
-import requests
+
 import pandas as pd
-from config_loader import BRAPI_API_KEY
+
 
 def fetch_and_save_ifix_snapshot():
+    import requests
+    from config_loader import BRAPI_API_KEY
     url = f"https://brapi.dev/api/quote/IFIX.SA?range=10y&interval=1d&token={BRAPI_API_KEY}"
     response = requests.get(url)
     data = response.json()
@@ -35,7 +37,7 @@ def load_ifix_data():
     df["IFIX"] = df["IFIX"].astype(str).str.replace(".", "", regex=False).str.replace(",", ".", regex=False).astype(float)
 
     # Filtra até 31/12/2020
-    return df.loc[:'2020-12-31'][["IFIX"]]
+    return df.loc[:'2021-01-12'][["IFIX"]]
 
 if __name__ == "__main__": #garante que o script seja rodado quando executado diretamente e não quando for importado por outro módulo
     fetch_and_save_ifix_snapshot()

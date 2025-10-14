@@ -57,7 +57,9 @@ print("NaNs per columns after interpolation:")
 print(returns_df.isna().sum())
 
 periods = [10, 5, 3]
-weights_dict = simulate_by_period(full_data, periods)
+risky_assets = full_data[["BOVA11", "IVVB11", "FII"]]
+risky_assets_names = ['BOVA11', 'IVVB11', 'FII']
+weights_dict = simulate_by_period(risky_assets, periods)
 
 portfolio_returns_dict = {}
 
@@ -68,7 +70,9 @@ for label, weights in weights_dict.items():
 
 
     ativos_usados = returns_df.columns[:len(weights)].tolist()
-    clean_returns = returns_df.dropna(subset=ativos_usados + ['LFT'])
+    clean_returns = returns_filtered.dropna(subset=ativos_usados + ['LFT'])
+    print("Retornos usados para portfólio:", clean_returns[ativos_usados].describe())
+    print("Pesos:", weights)
 
     if clean_returns.empty:
         print ('Clean Returns are empty for {label}. Passing...')
@@ -95,19 +99,45 @@ for period in ['10_years', '5_years', '3_years']:
         if key.endswith(period):
             series_filtered = series.loc[idx_filtered]
             cumulative = (1 + series_filtered).cumprod()
-            plt.plot(normalize_series(cumulative), label=key)
+            normalized = cumulative / cumulative.iloc[0]
+            plt.plot(normalized, label=key)
 
             if 'Efficient' in key:
                 weights = weights_dict[period]
-                ativos = returns_df.columns[:len(weights)]
+                ativos = risky_assets_names
                 pesos_formatados = ', '.join([f'{a}: {round(w, 2)}' for a, w in zip(ativos, weights)])
                 plt.text(0.01, 0.01, f'Pesos: {pesos_formatados}', transform=plt.gca().transAxes,
                          fontsize=9, bbox=dict(facecolor='white', alpha=0.6))
-    ibov_filtered = ibov_returns[series.index]
+    ibov_filtered = ibov_returns.loc[idx_filtered]
     ibov_cumulative = (1 + ibov_filtered).cumprod()
     plt.plot(normalize_series(ibov_cumulative), label='IBOVESPA', linestyle='--', color='black')
 
     plt.title(f'Cumulative Returns - {period}')
+    metrics_text = ''
+    for key in portfolio_returns_dict:
+        if key.endswith(period):
+            row = benchmark_df[benchmark_df['Portfolio'] == key]
+            if not row.empty:
+                r = row.iloc[0]
+                metrics_text += f'{key}:\n'
+                metrics_text += f' Return: {r['Annual Return']:.2%}\n'
+                metrics_text += f' Volatility: {r['Volatility']:.2%}\n'
+                metrics_text += f' Sharpe: {r['Sharpe']:.2%}\n'
+                metrics_text += f' Tracking Error: {r['Tracking Error']:.2%}\n'
+                metrics_text += f' Excess Return: {r['Excess Return']:.2%}\n\n'
+
+                ibov_period = ibov_returns.loc[idx_filtered]
+                ibov_annual_return = ibov_period.mean() * 252
+                ibov_volatility = ibov_period.std() * np.sqrt(252)
+                ibov_sharpe = ibov_annual_return / ibov_volatility if ibov_volatility != 0 else np.nan
+
+                metrics_text += f'IBOVESPA:\n'
+                metrics_text += f' Return: {ibov_annual_return:.2%}\n'
+                metrics_text += f' Volatility: {ibov_volatility:.2%}\n'
+                metrics_text += f' Sharpe: {ibov_sharpe:.2f}\n'
+
+    plt.gca().text(1.0051, 0.60, metrics_text, transform=plt.gca().transAxes,
+                   fontsize=7, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.7))
     plt.legend()
     plt.grid(True)
     plt.savefig(f'dashboard/cumulative_returns_{period}.png')
@@ -124,17 +154,6 @@ if benchmark_df is not None and not benchmark_df.empty:
     benchmark_df.to_csv('dashboard/portfolio_metrics.csv', index=False)
 else:
     print("Benchmark_df is empty")
-plt.figure(figsize=(12,6))
-for name, returns in portfolio_returns_dict.items():
-    print(f"{name} → NaNs: {returns.isna().sum()}, Shape: {returns.shape}")
-    cumulative = (1 + returns).cumprod()
-    plt.plot(cumulative, label=name)
-
-plt.plot((1 + ibov_returns).cumprod(), label="IBOVESPA", linestyle="--", color="black")
-plt.title("Cumulative Returns Comparison")
-plt.legend()
-plt.grid(True)
-plt.show()
 
 benchmark_df.to_csv("dashboard/portfolio_metrics.csv", index=False)
 returns_df.to_csv("dashboard/full_returns.csv")
