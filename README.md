@@ -67,7 +67,7 @@ Visualize results in Power BI
 Explore advanced metrics: max drawdown, beta, alpha, and monthly rebalancing
 
 LinkedIn Post
-Check out the project summary and visuals on LinkedIn
+Check out the project summary and visuals on https://www.linkedin.com/in/conrado-ara%C3%BAjo-travassos-5bbb87167/
 
 Contributions & Feedback
 Open to suggestions, collaborations, and feedback — feel free to reach out or fork the repo!
