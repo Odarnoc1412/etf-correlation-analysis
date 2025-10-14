@@ -1,27 +1,73 @@
-# etf-correlation-analysis
-"Correlation analysis and portfolio efficiency using Brazilian ETFs (BOVA11, IVVB11 and XFIX11) with Python, R, and Business Intelligence tools."
+# ETF Correlation & Portfolio Efficiency Analysis 🇧🇷📊
 
-While etf-correlation-analysis focuses on visualization, storytelling, and exploratory analysis using Python, R, and BI tools, portfolio-efficiency-etfs serves as the technical backbone for:
+This project explores portfolio construction and performance analysis using Brazilian ETFs — combining Python, R, and Business Intelligence tools, with support from Microsoft Copilot.
 
-Data collection and normalization (ETFs, IFIX, Selic Over)
+---
 
-LFT simulation based on daily Selic rates
+## 🎯 Project Overview
 
-Efficient frontier and equal-weight portfolio modeling
+The goal is to simplify investment strategies using accessible, representative assets from the Brazilian market:
 
-Modular organization for reuse and scalability
+- **BOVA11** → Brazilian equities
+- **IVVB11** → U.S. equities (USD exposure)
+- **FII** → Real estate funds (combined from IFIX and XFIX11)
 
-### How to set up access to the brapi.dev API
-Create a free account at brapi.dev
+We simulate efficient portfolios across three timeframes: **10, 5, and 3 years**, comparing them to:
 
-Generate your API key
+- **IBOVESPA** (benchmark)
+- A **60/40 portfolio** → 60% efficient portfolio + 40% LFT (risk-free asset)
 
-Create a file named config_loader.py with the following content:
+---
 
+## 🧠 Technical Highlights
+
+- Data collection and normalization from multiple sources (ETFs, IFIX, Selic)
+- LFT simulation based on daily Selic rates
+- Efficient frontier modeling using Sharpe Ratio optimization
+- Equal-weight portfolio simulation for comparison
+- Modular code structure for reuse and scalability
+- Visual outputs: cumulative returns, portfolio metrics, and weight distributions
+
+---
+
+## 🔌 API Setup: brapi.dev
+
+To access IFIX data via the Brapi API:
+
+1. Create a free account at [brapi.dev](https://brapi.dev)
+2. Generate your API key
+3. Create a file named `config_loader.py` with:
+
+```python
 BRAPI_TOKEN = "your_api_key_here"
+4. Run ifix_loader.py to download IFIX data
 
-The ifix_loader.py script can be executed directly to attempt downloading data via the brapi.dev API.
+5. Ensure ifix_snapshot.csv is saved in the data_sources/ directory
+The pipeline uses load_ifix_data() to load and filter IFIX data up to January 12, 2021.
 
-For use within the pipeline, the ifix_snapshot.csv file must be present in the data_sources/ directory.
+Repository Structure
+├── scripts/
+│   ├── data_loader.py
+│   ├── lft_model.py
+│   ├── portfolio_simulator.py
+│   ├── benchmarking.py
+│   └── test_pipeline.py
+├── dashboard/
+│   ├── cumulative_returns_*.png
+│   └── portfolio_metrics.csv
+├── data_sources/
+│   └── ifix_snapshot.csv
+├── README.md
 
-The pipeline only uses the load_ifix_data() function, which loads the data from the CSV and filters it up to December 31, 2020.
+Next Steps
+Rebuild the project in R using equal-weight portfolios
+
+Visualize results in Power BI
+
+Explore advanced metrics: max drawdown, beta, alpha, and monthly rebalancing
+
+LinkedIn Post
+Check out the project summary and visuals on LinkedIn
+
+Contributions & Feedback
+Open to suggestions, collaborations, and feedback — feel free to reach out or fork the repo!
