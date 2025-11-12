@@ -45,21 +45,21 @@ Each panel shows **Risk vs Mixed vs Benchmark portfolios**, with metrics such as
 ---
 
 ## 📂 Repository Structure
-etf-correlation-analysis 
-├── pycache/ # Python execution cache 
-├── dashboard/ # main outputs and charts 
-├── data/ # processed datasets 
-├── data_sources/ # original sources (e.g., IFIX snapshot) 
-├── notebooks/ # Jupyter notebooks (Python) 
-├── scripts/ # Python scripts (data loader, simulator, etc.) 
-├── visuals/ # additional images and charts 
-├── R/ # R implementation 
-│ ├── dashboard/ # outputs and charts generated in R 
-│ ├── data_sources/ # data sources used in R 
-│ ├── notebook/ # RMarkdown or exploratory scripts 
-│ └── scripts/ # R scripts (rebalancing, metrics, visualization) 
-└── README.md
-
+````etf-correlation-analysis 
+    ├── pycache/ # Python execution cache 
+    ├── dashboard/ # main outputs and charts 
+    ├── data/ # processed datasets 
+    ├── data_sources/ # original sources (e.g., IFIX snapshot) 
+    ├── notebooks/ # Jupyter notebooks (Python) 
+    ├── scripts/ # Python scripts (data loader, simulator, etc.) 
+    ├── visuals/ # additional images and charts 
+    ├── R/ # R implementation 
+    │ ├── dashboard/ # outputs and charts generated in R 
+    │ ├── data_sources/ # data sources used in R 
+    │ ├── notebook/ # RMarkdown or exploratory scripts 
+    │ └── scripts/ # R scripts (rebalancing, metrics, visualization) 
+    └── README.md
+```
 ---
 
 ## 🧑‍💻 Implementation Notes
