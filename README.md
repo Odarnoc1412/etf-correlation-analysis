@@ -32,13 +32,13 @@ We simulate portfolios across three timeframes: **10, 5, and 3 years**, comparin
 ## 📊 Key Results
 
 ### 10 Years
-![10y Evolution](dashboard/plot_10y.png)
+![10y Evolution](R/dashboard/plot_10y.png)
 
 ### 5 Years
-![5y Evolution](dashboard/plot_5y.png)
+![5y Evolution](R/dashboard/plot_5y.png)
 
 ### 3 Years
-![3y Evolution](dashboard/plot_3y.png)
+![3y Evolution](R/dashboard/plot_3y.png)
 
 Each panel shows **Risk vs Mixed vs Benchmark portfolios**, with metrics such as annualized return, drawdown, Sharpe, Sortino, alpha, beta, and tracking error.
 
@@ -89,4 +89,3 @@ Check out the project summary and visuals on [LinkedIn Profile](https://www.link
 
 ## 🤝 Contributions & Feedback
 Open to suggestions, collaborations, and feedback — feel free to reach out or fork the repo!
-
