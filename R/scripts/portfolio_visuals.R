@@ -4,6 +4,7 @@ library(dplyr)
 library(lubridate)
 library(knitr)
 library(purrr)
+install.packages("gridExtra")
 library(gridExtra)
 
 #Loading Data
@@ -77,9 +78,10 @@ plotar_janela <- function(janela) {
     t <- tableGrob(tabela, rows = NULL)
 
 
-    grid.arrange(g, t, nrow = 2, heights = c(3, 1))
-    print(g)
-    print(kable(tabela, caption = paste("Métricas -", janela)))
+    painel <- grid.arrange(g, t, nrow = 2, heights = c(3, 1))
+
+    ggsave(paste0("dashboard/plot_", janela, ".png"),
+            painel, width = 10, height = 8, dpi = 300)
 }
 
 plotar_janela("10y")
